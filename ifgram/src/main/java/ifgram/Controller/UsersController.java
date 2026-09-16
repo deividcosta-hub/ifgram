@@ -24,6 +24,6 @@ public class UsersController {
         }
         @PatchMapping
         public String patchUser(){
-            return "chamei o endpoint como um PUT";
+            return "chamei o endpoint como um PATCH";
         }
 }
