@@ -2,6 +2,8 @@ package ifgram.service;
 
 import ifgram.dto.UserRequest;
 import ifgram.dto.UserResponse;
+import ifgram.model.User;
+import ifgram.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,8 @@ public class UserService {
 
 
     }
+    public List<UserResponse> buscarUsuariosPorNome(UserRequest request) {
+        List<User> listaUsuarios = repository.findAll();
 
+    }
 }
