@@ -1,7 +1,10 @@
 package ifgram.Controller;
 
+import ifgram.dto.UserResponse;
 import ifgram.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("users")
@@ -15,8 +18,9 @@ public class UsersController {
     }
 
         @GetMapping
-        public String getUser() {
-            return "Olá mundo";
+    public List<UserResponse> getUsers() {
+            List<UserResponse> listaUsuarios = service.buscarTodosUsuarios();
+            return listaUsuarios;
         }
         @PostMapping
         public String postUser(){
