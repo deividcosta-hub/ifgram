@@ -43,10 +43,18 @@ public class UserService {
                     User.getNome(),
                     User.getEmail()
             );
+            listaUsuariosResponse.add(UserResponse);
         }
-    }
-    public List<UserResponse> buscarUsuariosPorNome(UserRequest request) {
-        List<User> listaUsuarios = repository.findAll();
+        return listaUsuariosResponse;
 
     }
+    public UserResponse atualizarUsuario(UserRequest userRequest){
+        User usuario = repository.findByEmail(userRequest.email());
+        usuario.setNome(userRequest.nome());
+        repository.save(usuario);
+
+        return UserResponse.from(usuario);
+
+    }
+
 }
