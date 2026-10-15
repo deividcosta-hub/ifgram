@@ -9,28 +9,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     private final UserRepository repository;
 
-    public UserService(UserRepository repository){
-        this.repository= repository;
+    public UserService(UserRepository repository) {
+        this.repository = repository;
 
     }
+
     @Transactional
-    public UserResponse criar(UserRequest request){
-        if (repository.existsByEmail(request.email())){
-            throw new EmailDuplicadoException(request,email());
+    public UserResponse criar(UserRequest request) {
+        if (repository.existsByEmail(request.email())) {
+            throw new EmailDuplicadoException(request, email());
 
         }
-        User salvo= repository.save(new User(request.nome(), request.email()));
+        User salvo = repository.save(new User(request.nome(), request.email()));
         return UserResponse.from(salvo);
 
 
     }
-    private UserResponse from(User usarioSalvo){
+
+    private UserResponse from(User usarioSalvo) {
         return null;
     }
 
@@ -48,13 +51,19 @@ public class UserService {
         return listaUsuariosResponse;
 
     }
-    public UserResponse atualizarUsuario(UserRequest userRequest){
-        User usuario = repository.findByEmail(userRequest.email());
-        usuario.setNome(userRequest.nome());
-        repository.save(usuario);
 
-        return UserResponse.from(usuario);
+    public UserResponse atualizarUsuario(UserRequest request) throws Exception {
+        Optional<User> usuario = repository.findByEmail(request.email());
+        if (usuario.isEmpty()) {
+            throw new Exception("usuário não existe na base de dados");
+        }
 
-    }
+
+        User usuarioSalvo = usuario.get();
+        usuarioSalvo.setNome(request.nome());
+        repository.save(usuarioSalvo);
+
+        return UserResponse.from(usuarioSalvo);
 
 }
+        }
